@@ -1,24 +1,11 @@
 ﻿using System;
 using Xunit;
+using NDash.Tests.TestClasses;
 
 namespace NDash.Tests
 {
     public class NDash_Compose_Tests
     {
-        class Developer
-        {
-            public string FirstName { get; private set; }
-            public string LastName { get; private set; }
-            public int Age { get; private set; }
-
-            public Developer(string firstName, string lastName, int age)
-            {
-                FirstName = firstName;
-                LastName = lastName;
-                Age = age;
-            }
-        }
-
         static readonly Func<Developer, string> getFullName = dev => $"{dev.FirstName} {dev.LastName}";
 
         static readonly Func<string, string> hello = name => $"Hello, {name}";
