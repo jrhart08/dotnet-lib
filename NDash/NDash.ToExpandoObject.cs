@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NDash.common;
+using System.Collections.Generic;
 using System.Dynamic;
 
 namespace NDash
@@ -17,6 +18,24 @@ namespace NDash
             foreach (var kvp in dict)
             {
                 expando.Add(kvp);
+            }
+
+            return (ExpandoObject)expando;
+        }
+
+        /// <summary>
+        /// Copies the object into an ExpandoObject. Useful if you're too lazy for class(es).
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static ExpandoObject ToExpandoObject(object source)
+        {
+            var props = Reflector.GetPublicInstanceProperties(source);
+
+            IDictionary<string, object> expando = new ExpandoObject();
+            foreach(var prop in props)
+            {
+                expando.Add(prop.Name, prop.GetValue(source));
             }
 
             return (ExpandoObject)expando;

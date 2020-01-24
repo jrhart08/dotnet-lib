@@ -18,9 +18,8 @@ namespace NDash
         /// <returns></returns>
         public static Dictionary<string, object> PickBy(object sourceObject, Func<object, string, bool> predicate)
         {
-            return sourceObject
-                .GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            return Reflector
+                .GetPublicInstanceProperties(sourceObject)
                 .Select(prop => new
                 {
                     prop.Name,
@@ -76,12 +75,12 @@ namespace NDash
         #region Generic variants
         public static T PickBy<T>(object sourceObject, Func<object, bool> predicate) where T : new()
         {
-            return Reflector.MapProperties<T>(PickBy(sourceObject, predicate));
+            return Reflector.MapCommonProperties<T>(PickBy(sourceObject, predicate));
         }
 
         public static T PickBy<T>(object sourceObject, Func<object, string, bool> predicate) where T : new()
         {
-            return Reflector.MapProperties<T>(PickBy(sourceObject, predicate));
+            return Reflector.MapCommonProperties<T>(PickBy(sourceObject, predicate));
         }
         #endregion
     }

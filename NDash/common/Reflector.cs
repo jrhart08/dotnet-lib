@@ -11,12 +11,19 @@ namespace NDash.common
     /// </summary>
     class Reflector
     {
+        public static IEnumerable<PropertyInfo> GetPublicInstanceProperties(Type type)
+            => type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        public static IEnumerable<PropertyInfo> GetPublicInstanceProperties<T>()
+            => GetPublicInstanceProperties(typeof(T));
+
+        public static IEnumerable<PropertyInfo> GetPublicInstanceProperties(object obj)
+            => GetPublicInstanceProperties(obj.GetType());
+
         // TODO: Poor man's AutoMapper. Just use AutoMapper.
-        public static T MapProperties<T>(IDictionary<string, object> source) where T : new()
+        public static T MapCommonProperties<T>(IDictionary<string, object> source) where T : new()
         {
-            var commonProps = typeof(T)
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(prop => source.ContainsKey(prop.Name));
+            var commonProps = GetPublicInstanceProperties<T>().Where(prop => source.ContainsKey(prop.Name));
 
             T target = new T();
             foreach (PropertyInfo prop in commonProps)
