@@ -14,24 +14,24 @@ namespace NDash.Tests
 
         static readonly Func<string, string> yell = str => str.ToUpper();
 
-        static int GetLength(string greeting) => greeting.Length;
-
         [Fact]
         public void should_be_chainable()
         {
             var joseph = new Developer("Joseph", "Hart", 25);
 
             Func<Developer, string> veryExcitedGreeting = getFullName
-                .Compose(hello)
                 .Compose(exclaim)
-                .Compose(yell);
+                .Compose(yell)
+                .Compose(hello);
 
-            Assert.Equal("HELLO, JOSEPH HART!", veryExcitedGreeting(joseph));
+            Assert.Equal("Hello, JOSEPH HART!", veryExcitedGreeting(joseph));
         }
 
         [Fact]
         public void should_be_chainable_indefinitely()
         {
+            int GetLength(string greeting) => greeting.Length;
+
             var joseph = new Developer("Joseph", "Hart", 25);
 
             Func<Developer, int> greetingLength = getFullName
